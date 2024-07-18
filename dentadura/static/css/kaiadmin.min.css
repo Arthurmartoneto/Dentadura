@@ -2558,8 +2558,8 @@ body[data-background-color=dark] .border-top {
 
 @media (min-width:768px) {
    .avatar-xxl {
-      width: 8rem;
-      height: 8rem
+      width: 16rem;
+      height: 16rem
    }
 
    .avatar-xxl .border {

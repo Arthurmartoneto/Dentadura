@@ -25,7 +25,7 @@ def home(request):
         return redirect('login')  # Redireciona para a página de login se não estiver autenticado
     return render(request, 'base.html', context)
 
-#
+# Dashboard
 @login_required
 @user_passes_test(in_dashboard_group)
 def dashboard(request):
@@ -37,6 +37,19 @@ def dashboard(request):
             'email': email
         }
     return render(request, 'dashboard.html', context)
+
+
+def profile(request):
+    context = {}  # Initialize context
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Get the user's email
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'profile.html', context)
+
 
 def logout_view(request):
     logout(request)
@@ -58,6 +71,7 @@ def login_view(request):
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
+
 
 def upload_profile_picture(request):
     if request.method == 'POST':
