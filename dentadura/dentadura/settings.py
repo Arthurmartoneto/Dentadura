@@ -72,6 +72,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dentadura.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://dentadura-production.up.railway.app',
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
