@@ -23,11 +23,16 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', core_views.home, name='home'),
-    path('dashboard/', core_views.dashboard, name='dashboard'),
+    path('base/', core_views.home, name='home'),
+    
+    path('', core_views.dashboard, name='dashboard'),
     path('profile/', core_views.profile, name='profile'),
+    
     path('login/', core_views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
+    path('products/', core_views.products, name='products'),
+
     path('upload_profile_picture/', core_views.upload_profile_picture, name='upload_profile_picture')
 ]
 if settings.DEBUG:

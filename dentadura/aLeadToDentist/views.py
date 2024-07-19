@@ -51,6 +51,18 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
+def products(request):
+    context = {}  # Initialize context
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Get the user's email
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'products.html', context)
+
+
 def logout_view(request):
     logout(request)
     return redirect('login')
