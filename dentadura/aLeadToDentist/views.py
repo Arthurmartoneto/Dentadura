@@ -5,68 +5,17 @@ from django.contrib import messages
 
 from django.contrib.auth import logout
 
-from .forms import ProfilePictureForm  # Importa o form
-from .models import UserProfile
+from .forms import FuncionarioForm
+from .models import Funcionario
 
 # Decorator para verificar se o usuário pertence ao grupo 'Dashboard'
 def in_dashboard_group(user):
     return user.groups.filter(name='Dashboard').exists()
 
-# Acesso base.html
-def home(request):
-    if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email  # Obtém o email do usuário
-        context = {
-            'username': username,
-            'email': email
-        }
-    else:
-        return redirect('login')  # Redireciona para a página de login se não estiver autenticado
-    return render(request, 'base.html', context)
-
-# Dashboard
-@login_required
-@user_passes_test(in_dashboard_group)
-def dashboard(request):
-    if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email  # Obtém o email do usuário
-        context = {
-            'username': username,
-            'email': email
-        }
-    return render(request, 'dashboard.html', context)
-
-
-def profile(request):
-    context = {}  # Initialize context
-    if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email  # Get the user's email
-        context = {
-            'username': username,
-            'email': email
-        }
-    return render(request, 'profile.html', context)
-
-
-def products(request):
-    context = {}  # Initialize context
-    if request.user.is_authenticated:
-        username = request.user.username
-        email = request.user.email  # Get the user's email
-        context = {
-            'username': username,
-            'email': email
-        }
-    return render(request, 'products.html', context)
-
 
 def logout_view(request):
     logout(request)
     return redirect('login')
-
 
 
 def login_view(request):
@@ -85,20 +34,150 @@ def login_view(request):
         return render(request, 'login.html')
 
 
-def upload_profile_picture(request):
-    if request.method == 'POST':
-        form = ProfilePictureForm(request.POST, request.FILES, instance=request.user.userprofile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profile picture updated successfully.')
-            return redirect('index')  # Redireciona para a página inicial ou outra página desejada após o sucesso
-        else:
-            messages.error(request, 'Failed to update profile picture. Please check the form.')
-    else:
-        try:
-            form = ProfilePictureForm(instance=request.user.userprofile)
-        except UserProfile.DoesNotExist:
-            messages.error(request, 'User profile does not exist.')
-            return redirect('index')  # Redireciona para a página inicial ou outra página desejada após o erro
+@login_required
+def home(request):
+    user = request.user
+    try:
+        funcionario = Funcionario.objects.get(usuario=user)
+    except Funcionario.DoesNotExist:
+        funcionario = None
+    
 
-    return render(request, 'upload_profile_picture.html', {'form': form})
+    context = {
+        'nome': funcionario.nome if funcionario else '',
+        'sobrenome': funcionario.sobrenome if funcionario else '',
+    }
+    
+    return render(request, 'base.html', context)
+
+
+
+@login_required
+@user_passes_test(in_dashboard_group)
+def dashboard(request):
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Obtém o email do usuário
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'dashboard.html', context)
+
+
+@login_required
+def profile(request):
+    user = request.user
+    try:
+        funcionario = Funcionario.objects.get(usuario=user)
+    except Funcionario.DoesNotExist:
+        funcionario = None
+    
+    if request.method == 'POST':
+        if funcionario:
+            form = FuncionarioForm(request.POST, request.FILES, instance=funcionario)
+        else:
+            form = FuncionarioForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            funcionario = form.save(commit=False)
+            funcionario.usuario = user
+            funcionario.save()
+            messages.success(request, "Informações atualizadas com sucesso.")
+            return redirect('profile')
+    else:
+        form = FuncionarioForm(instance=funcionario)
+    
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Obtém o email do usuário
+    
+    context = {
+        'form': form,
+        'username': username,
+        'email': email,
+        'nome': funcionario.nome if funcionario else '',
+        'sobrenome': funcionario.sobrenome if funcionario else '',
+    }
+    return render(request, 'profile.html', context)
+
+
+
+@login_required
+def agendamentos(request):
+    context = {}  # Initialize context
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Get the user's email
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'agendamentos.html', context)
+
+@login_required
+def pacientes(request):
+    context = {}  # Initialize context
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Get the user's email
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'pacientes.html', context)
+
+
+@login_required
+def funcionarios(request):
+    user = request.user
+    funcionario = Funcionario.objects.filter(usuario=user).first()
+
+    if request.method == 'POST':
+        if funcionario:
+            form = FuncionarioForm(request.POST, request.FILES, instance=funcionario)
+        else:
+            form = FuncionarioForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            funcionario = form.save(commit=False)
+            funcionario.usuario = user  # Associa o funcionário ao usuário logado
+            funcionario.save()
+            return redirect('funcionarios')  # Redireciona para a mesma página após salvar
+    else:
+        form = FuncionarioForm(instance=funcionario)
+
+    context = {
+        'username': user.username,
+        'email': user.email,
+        'form': form,
+        'funcionario': funcionario
+    }
+    return render(request, 'funcionarios.html', context)
+
+
+
+# ESTOQUE #########################################
+@login_required
+def produtos(request):
+    context = {}  # Initialize context
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Get the user's email
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'produtos.html', context)
+
+@login_required
+def equipamentos(request):
+    context = {}  # Initialize context
+    if request.user.is_authenticated:
+        username = request.user.username
+        email = request.user.email  # Get the user's email
+        context = {
+            'username': username,
+            'email': email
+        }
+    return render(request, 'equipamentos.html', context)

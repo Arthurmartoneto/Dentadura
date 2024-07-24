@@ -173,6 +173,35 @@ const modalShowcase = `
 // });
 
 
+// Calendario 
+$(document).ready(function() {
+	$('#calendario').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+
+		locale: 'pt-br',
+		selectable: true, // Adiciona a opção para selecionar datas
+
+		// Adicione seus eventos ao calendário
+		events: [
+			{
+				title: 'Férias do João',
+				start: '2023-11-01',
+				end: '2023-11-05'
+			},
+
+			{
+				title: 'Férias do Henrique',
+				start: '2023-11-01',
+				end: '2023-11-15'
+			},
+		]
+	});
+});
+
 // Cicle Chart
 Circles.create({
 	id:           'task-complete',
@@ -192,8 +221,8 @@ Circles.create({
 //Notify
 $.notify({
 	icon: 'icon-bell',
-	title: 'Kaiadmin',
-	message: 'Premium Bootstrap 5 Admin Dashboard',
+	title: 'LeadToDentist',
+	message: 'Seja bem vindo ao seu Dasboard',
 },{
 	type: 'secondary',
 	placement: {

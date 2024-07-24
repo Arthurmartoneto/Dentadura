@@ -1,16 +1,25 @@
+# urls.py
+
 from django.urls import path
-from django.contrib.auth import views
-from . import views
+from django.contrib.auth import views as auth_views  # Para usar views padrão do Django
+from . import views  # Suas views personalizadas
 
 urlpatterns = [
-    path('', views.login, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    # Páginas de autenticação
+    path('', views.login_view, name='login'),  # Certifique-se de que `login_view` está definido corretamente
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),  # Usando a view padrão de logout
     
+    # Páginas principais
     path('base/', views.home, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('profile/', views.profile, name='profile'),
     
-    path('products/', views.products, name='products'),
+    # Outras seções
+    path('produtos/', views.produtos, name='produtos'),
+    path('equipamentos/', views.equipamentos, name='equipamentos'),
     
-    path('upload_profile_picture/', views.upload_profile_picture, name='upload_profile_picture'),
+    path('agendamentos/', views.agendamentos, name='agendamentos'),
+    path('pacientes/', views.pacientes, name='pacientes'),
+    path('funcionarios/', views.funcionarios, name='funcionarios'),
+        
 ]

@@ -31,9 +31,13 @@ urlpatterns = [
     path('login/', core_views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     
-    path('products/', core_views.products, name='products'),
+    path('produtos/', core_views.produtos, name='produtos'),
+    path('equipamentos/', core_views.equipamentos, name='equipamentos'),
 
-    path('upload_profile_picture/', core_views.upload_profile_picture, name='upload_profile_picture')
+    path('agendamentos/', core_views.agendamentos, name='agendamentos'),
+    path('pacientes/', core_views.pacientes, name='pacientes'),
+    path('funcionarios/', core_views.funcionarios, name='funcionarios'),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
