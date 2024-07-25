@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% load static %}
+
+  <div class="wrapper">
+    <div class="page-inner mt-5">
+      <div class="row">
+        <div class="col-6">
+          <div class="page-header mt-5 mb-0">
+            <h3 class="fw-bold mb-3">Funcionários</h3>
+            <ul class="breadcrumbs mb-3">
+              <li class="nav-home">
+                <a href="{% url 'dashboard' %}"><i class="icon-home"></i></a>
+              </li>
+              <li class="separator">
+                <i class="icon-arrow-right"></i>
+              </li>
+              <li class="nav-item">
+                <a href="#">Funcionários</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pb-4">
+            <div class="ms-md-auto py-2 py-md-0 mt-5">
+              <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
+              <a href="#" class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#createFuncionarioModal"><i class="fa fa-plus"></i> Funcionários</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Exibindo a lista de funcionários -->
+      <div class="employee-list mt-4">
+        {% if funcionarios %}
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="basic-datatables" class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Salário</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if funcionarios %}
+                    {% for funcionario in funcionarios %}
+                      <tr>
+                        <td>{{ funcionario.id_funcionario }}</td>
+                        <td>{{ funcionario.nome }}</td>
+                        <td>{{ funcionario.sobrenome }}</td>
+                        <td>{{ funcionario.email }}</td>
+                        <td>{{ funcionario.telefone }}</td>
+                        <td>{{ funcionario.salario }}</td>
+                        <td>
+                          <a href="{% url 'user_profile' funcionario.usuario.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                          <a href="#" class="btn btn-warning btn-sm">Editar</a>
+                          <a href="#" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="6">Nenhum funcionário encontrado.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% else %}
+          <p>Nenhum funcionário encontrado.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="createFuncionarioModal" tabindex="-1" aria-labelledby="createFuncionarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createFuncionarioModalLabel">Novo Funcionário</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              {{ form.username.label_tag }}
+              <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" value="{{ form.username.value }}" class="form-control" placeholder="Username" />
+            </div>
+            <div class="form-group">
+              {{ form.email.label_tag }}
+              <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value }}" class="form-control" placeholder="Email" />
+            </div>
+            <div class="form-group">
+              {{ form.password1.label_tag }}
+              <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="form-control" placeholder="Password" />
+            </div>
+            <div class="form-group">
+              {{ form.password2.label_tag }}
+              <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="form-control" placeholder="Confirm Password" />
+            </div>
+            <button type="submit" class="btn btn-primary">Criar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

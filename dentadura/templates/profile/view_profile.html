@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% load static %}
+
+  <div class="wrapper">
+    <div class="page-inner mt-5">
+      <div class="col-md-12">
+        <div class="page-header mt-4 mb-0">
+          <h3 class="fw-bold mb-3">Perfil Funcionário</h3>
+          <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+              <a href="{% url 'dashboard' %}"><i class="icon-home"></i></a>
+            </li>
+            <li class="separator">
+              <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+              <a href="#">{{ user.username }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card mt-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-2">
+                {% if funcionario.foto_perfil %}
+                  <div class="avatar avatar-xxl">
+                    <img src="{{ funcionario.foto_perfil.url }}" alt="..." class="avatar-img rounded-circle" />
+                  </div>
+                {% else %}
+                  <img src="{% static 'img/profile.jpg' %}" alt="Default Profile" style="height: auto;" class="avatar-img rounded-circle" />
+                {% endif %}
+              </div>
+              <div class="col-10">
+                <div class="card-header">
+                  <h4 class="card-title">
+                    {% if funcionario and funcionario.nome and funcionario.sobrenome %}
+                      {{ funcionario.nome }} {{ funcionario.sobrenome }}
+                    {% else %}
+                      Cadastro incompleto
+                    {% endif %}
+                  </h4>
+                </div>
+                <div class="card-body">
+                  <ul class="nav nav-tabs nav-line nav-color-secondary" id="line-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="line-home-tab" data-bs-toggle="pill" href="#line-home" role="tab" aria-controls="line-home" aria-selected="true">Informações</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-contact" role="tab" aria-controls="line-contact" aria-selected="false">Status</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content mt-3 mb-3" id="line-tabContent">
+                    <div class="tab-pane fade show active" id="line-home" role="tabpanel" aria-labelledby="line-home-tab">
+                      {% if funcionario and funcionario.nome and funcionario.sobrenome and funcionario.email %}
+                        <h3>Informações do Funcionário</h3>
+                        <div class="row">
+                          <div class="col-6 mt-4">
+                            <p>
+                              <strong>ID:</strong> {{ funcionario.id_funcionario }}
+                            </p>
+                            <p>
+                              <strong>Nome:</strong> {{ funcionario.nome }}
+                            </p>
+                            <p>
+                              <strong>Sobrenome:</strong> {{ funcionario.sobrenome }}
+                            </p>
+                            <p>
+                              <strong>Data de Nascimento:</strong> {{ funcionario.data_nascimento }}
+                            </p>
+                            <p>
+                              <strong>Gênero:</strong> {{ funcionario.genero }}
+                            </p>
+                            <p>
+                              <strong>Email:</strong> {{ funcionario.email }}
+                            </p>
+                            <p>
+                              <strong>Telefone:</strong> {{ funcionario.telefone }}
+                            </p>
+                            <p>
+                              <strong>Endereço:</strong> {{ funcionario.endereco }}
+                            </p>
+                            <p>
+                              <strong>Cidade:</strong> {{ funcionario.cidade }}
+                            </p>
+                          </div>
+                          <div class="col-6 mt-4">
+                            <p>
+                              <strong>Estado:</strong> {{ funcionario.estado }}
+                            </p>
+                            <p>
+                              <strong>CEP:</strong> {{ funcionario.cep }}
+                            </p>
+                            <p>
+                              <strong>País:</strong> {{ funcionario.pais }}
+                            </p>
+                            <p>
+                              <strong>Cargo:</strong> {{ funcionario.cargo }}
+                            </p>
+                            <p>
+                              <strong>Departamento:</strong> {{ funcionario.departamento }}
+                            </p>
+                            <p>
+                              <strong>Data de Admissão:</strong> {{ funcionario.data_admissao }}
+                            </p>
+                            <p>
+                              <strong>Salário:</strong> {{ funcionario.salario }}
+                            </p>
+                            <p>
+                              <strong>Status do Emprego:</strong> {{ funcionario.status_emprego }}
+                            </p>
+                          </div>
+                        </div>
+                      {% else %}
+                        <p>Cadastro incompleto</p>
+                      {% endif %}
+                    </div>
+
+                    <div class="tab-pane fade" id="line-contact" role="tabpanel" aria-labelledby="line-contact-tab">
+                      <p>Salário Pendente</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Custom template -->
+{% endblock %}

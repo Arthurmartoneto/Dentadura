@@ -6,12 +6,10 @@
     <div class="page-inner mt-5">
       <div class="col-md-12">
         <div class="page-header mt-4 mb-0">
-          <h3 class="fw-bold mb-3">Perfil</h3>
+          <h3 class="fw-bold mb-3">Meu Perfil</h3>
           <ul class="breadcrumbs mb-3">
             <li class="nav-home">
-              <a href="#">
-                <i class="icon-home"></i>
-              </a>
+              <a href="{% url 'dashboard'%}"><i class="icon-home"></i></a>
             </li>
             <li class="separator">
               <i class="icon-arrow-right"></i>
@@ -36,29 +34,89 @@
               <div class="col-10">
                 <div class="card-header">
                   <h4 class="card-title">
-                    {% if nome and sobrenome %}
-                      {{ nome }} {{ sobrenome }}
+                    {% if funcionario and funcionario.nome and funcionario.sobrenome %}
+                      {{ funcionario.nome }} {{ funcionario.sobrenome }}
                     {% else %}
-                      Cadastro incompleto - Terminar em Perfil
+                      Cadastro incompleto
                     {% endif %}
                   </h4>
                 </div>
                 <div class="card-body">
                   <ul class="nav nav-tabs nav-line nav-color-secondary" id="line-tab" role="tablist">
                     <li class="nav-item">
-                      <a class="nav-link active" id="line-home-tab" data-bs-toggle="pill" href="#line-home" role="tab" aria-controls="line-home" aria-selected="true">Home</a>
+                      <a class="nav-link active" id="line-home-tab" data-bs-toggle="pill" href="#line-home" role="tab" aria-controls="line-home" aria-selected="true">Informações</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" id="line-profile-tab" data-bs-toggle="pill" href="#line-profile" role="tab" aria-controls="line-profile" aria-selected="false">Profile</a>
+                      <a class="nav-link" id="line-profile-tab" data-bs-toggle="pill" href="#line-profile" role="tab" aria-controls="line-profile" aria-selected="false">Cadastro</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-contact" role="tab" aria-controls="line-contact" aria-selected="false">Contact</a>
+                      <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-contact" role="tab" aria-controls="line-contact" aria-selected="false">Status</a>
                     </li>
                   </ul>
                   <div class="tab-content mt-3 mb-3" id="line-tabContent">
                     <div class="tab-pane fade show active" id="line-home" role="tabpanel" aria-labelledby="line-home-tab">
-                      <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                      {% if funcionario and funcionario.nome and funcionario.sobrenome and funcionario.email %}
+                        <h3>Informações do Funcionário</h3>
+                        <div class="row">
+                          <div class="col-6 mt-4">
+                            <p>
+                              <strong>ID:</strong> {{ funcionario.id_funcionario }}
+                            </p>
+                            <p>
+                              <strong>Nome:</strong> {{ funcionario.nome }}
+                            </p>
+                            <p>
+                              <strong>Sobrenome:</strong> {{ funcionario.sobrenome }}
+                            </p>
+                            <p>
+                              <strong>Data de Nascimento:</strong> {{ funcionario.data_nascimento }}
+                            </p>
+                            <p>
+                              <strong>Gênero:</strong> {{ funcionario.genero }}
+                            </p>
+                            <p>
+                              <strong>Email:</strong> {{ funcionario.email }}
+                            </p>
+                            <p>
+                              <strong>Telefone:</strong> {{ funcionario.telefone }}
+                            </p>
+                            <p>
+                              <strong>Endereço:</strong> {{ funcionario.endereco }}
+                            </p>
+                            <p>
+                              <strong>Cidade:</strong> {{ funcionario.cidade }}
+                            </p>
+                          </div>
+                          <div class="col-6 mt-4">
+                            <p>
+                              <strong>Estado:</strong> {{ funcionario.estado }}
+                            </p>
+                            <p>
+                              <strong>CEP:</strong> {{ funcionario.cep }}
+                            </p>
+                            <p>
+                              <strong>País:</strong> {{ funcionario.pais }}
+                            </p>
+                            <p>
+                              <strong>Cargo:</strong> {{ funcionario.cargo }}
+                            </p>
+                            <p>
+                              <strong>Departamento:</strong> {{ funcionario.departamento }}
+                            </p>
+                            <p>
+                              <strong>Data de Admissão:</strong> {{ funcionario.data_admissao }}
+                            </p>
+                            <p>
+                              <strong>Salário:</strong> {{ funcionario.salario }}
+                            </p>
+                            <p>
+                              <strong>Status do Emprego:</strong> {{ funcionario.status_emprego }}
+                            </p>
+                          </div>
+                        </div>
+                      {% else %}
+                        <p>Cadastro incompleto</p>
+                      {% endif %}
                     </div>
 
                     <div class="tab-pane fade" id="line-profile" role="tabpanel" aria-labelledby="line-profile-tab">
@@ -197,8 +255,7 @@
                     </div>
 
                     <div class="tab-pane fade" id="line-contact" role="tabpanel" aria-labelledby="line-contact-tab">
-                      <p>Pityful a rethoric question ran over her cheek, then she continued her way. On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country.</p>
-                      <p>But nothing the copy said could convince her and so it didnâ€™t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their</p>
+                      <p>Salário Pendente</p>
                     </div>
                   </div>
                 </div>

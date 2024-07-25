@@ -1,6 +1,7 @@
 from django import forms
 from .models import Funcionario
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 
 
 class LoginForm(AuthenticationForm):
@@ -40,3 +41,22 @@ class FuncionarioForm(forms.ModelForm):
             'salario': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Salário'}),
             'status_emprego': forms.Select(choices=[('Ativo', 'Ativo'), ('Inativo', 'Inativo'), ('Temporário', 'Temporário')], attrs={'class': 'form-control'}),
         }
+        
+
+class CreateFuncionario(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
+        }
+        
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2

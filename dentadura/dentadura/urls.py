@@ -27,6 +27,7 @@ urlpatterns = [
     
     path('', core_views.dashboard, name='dashboard'),
     path('profile/', core_views.profile, name='profile'),
+    path('profile/<str:user_id>/', core_views.view_profile, name='user_profile'),
     
     path('login/', core_views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
